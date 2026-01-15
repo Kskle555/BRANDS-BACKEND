@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="ProductManagement.Application/ProductManagement.Application.csproj" />
+  <Project Path="ProductManagement.Domain/ProductManagement.Domain.csproj" />
+  <Project Path="ProductManagement.Infrastructure/ProductManagement.Infrastructure.csproj" />
+  <Project Path="ProductManagement.Persistence/ProductManagement.Persistence.csproj" />
+  <Project Path="ProductManagementt.API/ProductManagementt.API.csproj" />
+</Solution>
