@@ -19,6 +19,15 @@ namespace ProductManagement.Persistence.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<IReadOnlyList<T>> GetPagedReponseAsync(int pageNumber, int pageSize)
+        {
+            return await _dbContext.Set<T>()
+                .Skip((pageNumber - 1) * pageSize) // Önceki sayfaları atla
+                .Take(pageSize)                    // İstenen kadar al
+                .AsNoTracking()                    // Okuma işlemi olduğu için hızlandırır (Cache yok)
+                .ToListAsync();
+        }
+
         public async Task<T> AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);

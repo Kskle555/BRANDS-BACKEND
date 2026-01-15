@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Application.Features.Products.Commands.CreateProduct;
+using ProductManagement.Application.Features.Products.Queries.GetAllProducts;
 using System.Threading.Tasks;
 
 namespace ProductManagement.API.Controllers
@@ -27,6 +28,14 @@ namespace ProductManagement.API.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllProductsQuery query)
+        {
+            // [FromQuery] kullanalim
+            var result = await _mediator.Send(query);
+            return Ok(result);
         }
     }
 }

@@ -15,6 +15,8 @@ namespace ProductManagement.Domain.Interfaces
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
 
+        Task<IReadOnlyList<T>> GetPagedReponseAsync(int pageNumber, int pageSize);
+
         // Pagination ve Filtering için gerekli metot imzasi
         IQueryable<T> Where(Expression<Func<T, bool>> predicate);
     }
