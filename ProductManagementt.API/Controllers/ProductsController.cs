@@ -45,9 +45,9 @@ namespace ProductManagement.API.Controllers
         }
 
 
-      
 
-        [Authorize]
+        //sadece adminler silebilsin
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
