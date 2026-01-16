@@ -66,5 +66,10 @@ namespace ProductManagement.Persistence.Repositories
         {
             return _dbContext.Set<T>().Where(predicate);
         }
+
+        public async Task<T> GetByFilterAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbContext.Set<T>().FirstOrDefaultAsync(predicate);
+        }
     }
 }

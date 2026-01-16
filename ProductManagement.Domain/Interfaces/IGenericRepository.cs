@@ -17,6 +17,7 @@ namespace ProductManagement.Domain.Interfaces
 
         Task<IReadOnlyList<T>> GetPagedReponseAsync(int pageNumber, int pageSize);
 
+        Task<T> GetByFilterAsync(Expression<Func<T, bool>> predicate);
         // Pagination ve Filtering için gerekli metot imzasi
         IQueryable<T> Where(Expression<Func<T, bool>> predicate);
     }

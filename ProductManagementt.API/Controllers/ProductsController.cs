@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Application.Features.Products.Commands.CreateProduct;
 using ProductManagement.Application.Features.Products.Commands.DeleteProduct;
@@ -19,6 +20,17 @@ namespace ProductManagement.API.Controllers
             _mediator = mediator;
         }
 
+
+        // GET işlemleri herkese açık olsun (Authorize bilerek eklemedim)
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] GetAllProductsQuery query)
+        {
+            // [FromQuery] kullanalim
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductCommand command)
         {
@@ -32,15 +44,10 @@ namespace ProductManagement.API.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] GetAllProductsQuery query)
-        {
-            // [FromQuery] kullanalim
-            var result = await _mediator.Send(query);
-            return Ok(result);
-        }
 
+      
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -53,6 +60,7 @@ namespace ProductManagement.API.Controllers
             }
             return BadRequest(result);
         }
+        [Authorize]
 
         [HttpPut]
         public async Task<IActionResult> Update(UpdateProductCommand command)
