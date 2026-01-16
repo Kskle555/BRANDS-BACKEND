@@ -31,13 +31,25 @@ builder.Services.AddAutoMapper(typeof(GeneralMapping).Assembly);
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(GeneralMapping).Assembly));
 
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()   // Her yerden gelen isteği kabul et
+                   .AllowAnyMethod()   // GET, POST, PUT, DELETE hepsine izin ver
+                   .AllowAnyHeader();  // Tüm headerlara izin ver
+        });
+});
+
 // 5️⃣ Controller ekle
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer(); // Endpointleri tarar
 builder.Services.AddSwaggerGen();           // Dokümanı oluşturur
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddHttpClient<ProductManagement.Infrastructure.Services.OpenAiService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -97,6 +109,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthentication();
 
 app.UseAuthorization();

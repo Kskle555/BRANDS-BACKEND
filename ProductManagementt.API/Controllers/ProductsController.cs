@@ -5,6 +5,7 @@ using ProductManagement.Application.Features.Products.Commands.CreateProduct;
 using ProductManagement.Application.Features.Products.Commands.DeleteProduct;
 using ProductManagement.Application.Features.Products.Commands.UpdateProduct;
 using ProductManagement.Application.Features.Products.Queries.GetAllProducts;
+using ProductManagement.Infrastructure.Services;
 using System.Threading.Tasks;
 
 namespace ProductManagement.API.Controllers
@@ -14,10 +15,12 @@ namespace ProductManagement.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly OpenAiService _aiService;
 
-        public ProductsController(IMediator mediator)
+        public ProductsController(IMediator mediator,OpenAiService aiService)
         {
             _mediator = mediator;
+            _aiService = aiService;
         }
 
 
@@ -72,6 +75,20 @@ namespace ProductManagement.API.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
+        }
+
+        [HttpPost("generate-description")]
+        public async Task<IActionResult> GenerateDescription([FromBody] string productName)
+        {
+            var description = await _aiService.GenerateProductDescription(productName);
+            return Ok(new { description });
+        }
+
+        [HttpPost("generate-price")]
+        public async Task<IActionResult> GeneratePrice([FromBody] string productName)
+        {
+            var price = await _aiService.GeneratePricePrediction(productName);
+            return Ok(new { price = int.Parse(price) }); // Sayı olarak dönüyoruz
         }
     }
 }
