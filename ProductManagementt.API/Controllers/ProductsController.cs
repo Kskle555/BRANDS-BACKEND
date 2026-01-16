@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Application.Features.Products.Commands.CreateProduct;
 using ProductManagement.Application.Features.Products.Commands.DeleteProduct;
+using ProductManagement.Application.Features.Products.Commands.UpdateProduct;
 using ProductManagement.Application.Features.Products.Queries.GetAllProducts;
 using System.Threading.Tasks;
 
@@ -44,6 +45,18 @@ namespace ProductManagement.API.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var command = new DeleteProductCommand(id);
+            var result = await _mediator.Send(command);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateProductCommand command)
+        {
             var result = await _mediator.Send(command);
 
             if (result.Success)
